@@ -10,7 +10,21 @@ use Illuminate\Support\Facades\Cookie;
 //--------------------->>>   Login    --------------------->>>
 Route::get('/', fn() => redirect('/login'));
 
-Route::get('/login', fn() => view('/login'));
+//Route::get('/login', fn() => view('/login'));
+
+
+
+Route::get('/login',function (Request $request){
+    if (!Auth::check() && $request->cookie('remember')) {
+        Auth::loginUsingId($request->cookie('remember'));
+    };
+    if (Auth::check()) {
+        return redirect('/home');
+    };
+    return view('/login');
+});
+
+
 
 Route::post('/login',function (Request $request){
     $admin_email = config('auth.admin_name');
@@ -50,6 +64,9 @@ post('register',function (RegisterRequest $request){
 //    view('/home')->with('user',$request);
 //});
 Route::get('/home', function(){
+    if (!Auth::check()){
+        return redirect('/login');
+    }
     return view('home', ['user_information' => Auth::user()]);
 });
 
@@ -142,6 +159,7 @@ Route::post('logout',function (Request $request){
     Auth::logout();
     $request->session()->invalidate();
     $request->session()->regenerateToken();
+    cookie::queue(Cookie::forget('remember_user'));
     return redirect('/');
 });
 
