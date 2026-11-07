@@ -15,8 +15,8 @@ Route::get('/', fn() => redirect('/login'));
 
 
 Route::get('/login',function (Request $request){
-    if (!Auth::check() && $request->cookie('remember')) {
-        Auth::loginUsingId($request->cookie('remember'));
+    if (!Auth::check() && $request->cookie('remember_user')) {
+        Auth::loginUsingId($request->cookie('remember_user'));
     };
     if (Auth::check()) {
         return redirect('/home');

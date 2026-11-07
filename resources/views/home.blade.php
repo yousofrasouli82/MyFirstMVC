@@ -44,8 +44,12 @@
         <td>Phone Number</td>
         <td>{{$user_information->phone_number}}</td>
     </tr>
-    <p><a href="/"> Logout </a></p>
 </table>
+
+<form method="post" action="/logout" class="inline">
+    @csrf
+    <button>Logout</button>
+</form>
 
 
 
