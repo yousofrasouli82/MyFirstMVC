@@ -12,6 +12,7 @@
     </h2>
 
     <h3>Users Information count = {{$all_users->count()}}</h3>
+    <p><a href="/add_user_admin">Add new user</a></p>
     <table>
         <tr>
             <th>First Name</th>

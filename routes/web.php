@@ -66,7 +66,21 @@ Route::get('/admin',function(){
    ]);
 });
 
+//--------------------->>>   add user _ admin    --------------------->>>
+Route::get('/add_user_admin',function (){
+    if (!session('is_admin')){
+        return redirect('/login');
+    }
+    return view('/add_user');
+});
 
+Route::post('/add_user_admin',function (RegisterRequest $request){
+    if (!session('is_admin')){
+        return redirect('/login');
+    };
+    User::create($request->validated());
+    return redirect('/admin')->with('successful', 'your add employee was successful!');
+});
 //--------------------->>>   edit    --------------------->>>
 
 Route::get('edit/{id}',function($id){
