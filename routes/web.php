@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UpdateUserRequest;
+use Illuminate\Support\Facades\Cookie;
 //--------------------->>>   Login    --------------------->>>
 Route::get('/', fn() => redirect('/login'));
 
@@ -22,6 +23,9 @@ Route::post('/login',function (Request $request){
 
     $credit = $request->only('email','password');
     if (Auth::attempt($credit)){
+        if ($request->boolean('remember')) {
+            Cookie::queue('remember_user',auth()->id(),60*24*10); // 10 roz to cookie mimone
+        }
         return redirect('/home');
     }
     return redirect('/login')->with('failure','Email or Password is incorrect');
